@@ -1,0 +1,50 @@
+ <!-- jQuery-->
+<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<h3>Chat Thread</h3>
+<hr>
+
+<form id="form">
+	{{form}}
+	<input type="Submit" value="Send Message"/>
+</form>
+
+<hr>
+
+{% if thread == None %}
+	<h4>Contact does NOT exist...</h4>
+{% else %}
+	{% for message in thread.message_set.all %}
+
+		<p>{{message}}</p>
+		<p>Sender: {{message.sender}}</p>
+		<p>Date: {{message.created}}</p>
+		<hr>
+	{% empty %}
+		<p>No Messages in this thread...</p>
+	{% endfor %}
+
+{% endif %}
+
+
+<script>
+	$('#form').on('submit', function(e){
+		e.preventDefault()
+
+		var url = window.location
+		var data = $(this).serialize()
+		console.log(data)
+
+			$.ajax({
+					method: "POST",
+					url: url,
+					data:$(this).serialize(),	
+					success:function(){	
+						location.reload()
+					}
+				});
+
+	})
+
+	
+</script>
